@@ -15,14 +15,18 @@ body{
     font-style: normal;
     font-weight: 500;
     font-size: 36px;
-    
+    margin: 32px;
+}
+
+#add-project:hover{
+    cursor: pointer;
 }
 
 .project{
     border: 1px black solid;
     border-radius: 27px;
     width: 820px;
-    margin: 32px;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -6,10 +6,20 @@ function addToStorage(item) {
         localStorage.setItem('projects', JSON.stringify(items));
     } else {
         let items = JSON.parse(localStorage.getItem('projects'));
-        console.log(`from dataManager ${items}`);
+        
         items.push(item);
         localStorage.setItem('projects', JSON.stringify(items));
         
     }
 }
-export {localData, addToStorage}; 
+
+function removeFromStorage(index) {
+    let projects = getLocalData();
+    projects.splice(index, 1);
+    localStorage.setItem('projects', JSON.stringify(projects));
+}
+
+function getLocalData() {
+    return JSON.parse(localStorage.getItem('projects'));
+}
+export {localData, addToStorage, removeFromStorage};  

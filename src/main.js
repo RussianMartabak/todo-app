@@ -75,8 +75,18 @@ function refreshDisplay() {
             let newProject = elementFactory.projectBox(index, e.title, parseISO(e.dueDate), e.tasks);
             document.body.insertBefore(newProject, emptyProject);
         })
+        //add event listener to all remove button 
+        let deleteButtons = document.body.querySelectorAll('.delete');
+        deleteButtons.forEach(el => {el.addEventListener('click', removeProject)});
     }
     
+}
+
+function removeProject(e) {
+    let targetProject = e.target.parentElement;
+    let index = targetProject.getAttribute('data-index');
+    dataManager.removeFromStorage(index);
+    refreshDisplay();
 }
 
 function removeAll(elementClass) {
@@ -88,3 +98,4 @@ function removeAll(elementClass) {
         });
 
 }
+

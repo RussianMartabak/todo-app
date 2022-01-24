@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: './src/main.js',
-  devtool: 'eval',
+  devtool: 'eval-cheap-source-map',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),

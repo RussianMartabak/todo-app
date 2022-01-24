@@ -12,8 +12,8 @@ let localData = localStorage.getItem('projects');
 
 document.body.appendChild(projectModal);
 
-document.body.appendChild(elementFactory.projectBox(0, 'Vanilla Project', currentDate));
 document.body.appendChild(elementFactory.emptyProjectBox());
+refreshDisplay();
 
 
 //the logic for project modal
@@ -70,8 +70,8 @@ function refreshDisplay() {
     if (JSON.parse(localStorage.getItem('projects'))) {
         removeAll('.project');
         let emptyProject = document.querySelector('.empty-project');
+        //load projects from localstorage
         JSON.parse(localStorage.getItem('projects')).forEach((e, index) => {
-            console.log(parseISO(e.dueDate))
             let newProject = elementFactory.projectBox(index, e.title, parseISO(e.dueDate), e.tasks);
             document.body.insertBefore(newProject, emptyProject);
         })
@@ -81,6 +81,10 @@ function refreshDisplay() {
 
 function removeAll(elementClass) {
     let items = document.querySelectorAll(elementClass);
-    if (!items.length === 0) items.forEach(e => e.remove());
+    console.log(items);
+    if (items.length !== 0) items.forEach(e => {
+            console.log(e);
+            e.remove();
+        });
 
 }

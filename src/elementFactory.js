@@ -1,10 +1,11 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format } from "date-fns";
 import deleteIcon from "./delete.png";
 
 
-const projectBox = (title, duedate, taskList = []) => {
+const projectBox = (index, title, duedate, taskList = []) => {
     const element = document.createElement('div');
     element.classList.add('project');
+    element.setAttribute('data-index', index);
     let elementTitle = document.createElement('div');
     elementTitle.classList.add('project-title');
     elementTitle.textContent = title;
@@ -14,13 +15,14 @@ const projectBox = (title, duedate, taskList = []) => {
     deleteIconHTML.src = deleteIcon;
     deleteIconHTML.style.cssText = 'position: absolute';
     deleteIconHTML.style.cssText += 'top: 24px; right: 24px';
-    deleteIconHTML.classList.add('delete');
+    deleteIconHTML.classList.add('delete');//to find the delete butoon
     element.appendChild(deleteIconHTML);
 
     let due = document.createElement('div');
     due.classList.add('project-due');
     let timedistance = formatDistanceToNow(duedate, {addSuffix: true});
-    due.textContent = `Due ${timedistance}`;
+    let formattedDate = format(duedate, 'MM/dd/yyyy');
+    due.textContent = `Due ${timedistance}. ${formattedDate}`;
     element.appendChild(due);
 
     if (!taskList.length === 0) taskList.forEach(e => element.appendChild(e));
@@ -32,7 +34,7 @@ const projectBox = (title, duedate, taskList = []) => {
 const emptyProjectBox = () => {
     let title = '+ Add a Project';
     const element = document.createElement('div');
-    element.classList.add('project');
+    element.classList.add('empty-project');
     let elementTitle = document.createElement('div');
     elementTitle.setAttribute('id', 'open-project-modal');//id for the modal button
     elementTitle.classList.add('project-title');

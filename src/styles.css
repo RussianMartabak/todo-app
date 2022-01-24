@@ -34,6 +34,17 @@ body{
     position: relative;
 }
 
+.empty-project{
+    border: 1px black solid;
+    border-radius: 27px;
+    width: 820px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
 .project-title{
     font-style: normal;
     font-weight: normal;

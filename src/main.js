@@ -1,14 +1,18 @@
 import "./styles.css";
 import * as elementFactory from './elementFactory.js';
+import {project} from "./project.js";
+import * as dataManager from "./dataManager.js";
+import { parseISO } from "date-fns";
 
 const projectModal = elementFactory.projectModal();
 const currentDate = new Date();
-const projects = [...document.body.querySelectorAll('.project')];
+let localData = localStorage.getItem('projects');
 
 
 
 document.body.appendChild(projectModal);
-document.body.appendChild(elementFactory.projectBox('Vanilla Project', currentDate));
+
+document.body.appendChild(elementFactory.projectBox(0, 'Vanilla Project', currentDate));
 document.body.appendChild(elementFactory.emptyProjectBox());
 
 
@@ -26,8 +30,57 @@ function openProjectModalHandler(e) {
 }
 
 function submitProjectModal(e) {
-    console.log(projectModalTextInput.value);
-    console.log(projectModalDateInput.value);
+    if (!validate([projectModalDateInput, projectModalTextInput])) {
+        alert('not filled yet');
+    } else {
+        //add new project object to data
+        console.log('date input ' + projectModalDateInput.value);
+        let newProjectDate = new Date(projectModalDateInput.value);
+        console.log(newProjectDate);
+        let newProject = project(projectModalTextInput.value, newProjectDate);
+        
+        dataManager.addToStorage(newProject);
+        //close modal
+        console.log(dataManager.localData);
+        projectModal.style.cssText = 'display: none';
+        projectModalTextInput.value = '';
+        projectModalDateInput.value = '';
+        //load the data to html
+        refreshDisplay();
+    }
+     
 }
 
+
+
 //validate function for both modals, pass in field id as argument
+function validate(fieldsArray) {
+    let validity = true;
+    for (let i = 0; i < fieldsArray.length; i++) {
+        let form = fieldsArray[i];
+        if (form.value === '') {
+            validity = false;
+            break;
+        }
+    }
+    return validity;
+}
+
+function refreshDisplay() {
+    if (JSON.parse(localStorage.getItem('projects'))) {
+        removeAll('.project');
+        let emptyProject = document.querySelector('.empty-project');
+        JSON.parse(localStorage.getItem('projects')).forEach((e, index) => {
+            console.log(parseISO(e.dueDate))
+            let newProject = elementFactory.projectBox(index, e.title, parseISO(e.dueDate), e.tasks);
+            document.body.insertBefore(newProject, emptyProject);
+        })
+    }
+    
+}
+
+function removeAll(elementClass) {
+    let items = document.querySelectorAll(elementClass);
+    if (!items.length === 0) items.forEach(e => e.remove());
+
+}

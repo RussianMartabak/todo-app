@@ -22,4 +22,4 @@ function removeFromStorage(index) {
 function getLocalData() {
     return JSON.parse(localStorage.getItem('projects'));
 }
-export {localData, addToStorage, removeFromStorage};  
+export {localData, addToStorage, removeFromStorage, getLocalData};  

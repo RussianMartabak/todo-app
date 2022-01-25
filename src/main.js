@@ -4,6 +4,7 @@ import {project} from "./project.js";
 import * as dataManager from "./dataManager.js";
 import { parseISO } from "date-fns";
 
+const taskModal = elementFactory.taskModal();
 const projectModal = elementFactory.projectModal();
 const currentDate = new Date();
 let localData = localStorage.getItem('projects');
@@ -11,6 +12,7 @@ let localData = localStorage.getItem('projects');
 
 
 document.body.appendChild(projectModal);
+document.body.appendChild(taskModal);
 
 document.body.appendChild(elementFactory.emptyProjectBox());
 refreshDisplay();
@@ -34,9 +36,8 @@ function submitProjectModal(e) {
         alert('not filled yet');
     } else {
         //add new project object to data
-        console.log('date input ' + projectModalDateInput.value);
+        
         let newProjectDate = new Date(projectModalDateInput.value);
-        console.log(newProjectDate);
         let newProject = project(projectModalTextInput.value, newProjectDate);
         
         dataManager.addToStorage(newProject);
@@ -71,7 +72,7 @@ function refreshDisplay() {
         removeAll('.project');
         let emptyProject = document.querySelector('.empty-project');
         //load projects from localstorage
-        JSON.parse(localStorage.getItem('projects')).forEach((e, index) => {
+        dataManager.getLocalData().forEach((e, index) => {
             let newProject = elementFactory.projectBox(index, e.title, parseISO(e.dueDate), e.tasks);
             document.body.insertBefore(newProject, emptyProject);
         })

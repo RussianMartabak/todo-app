@@ -25,7 +25,12 @@ const projectBox = (index, title, duedate, taskList = []) => {
     due.textContent = `Due ${timedistance}. ${formattedDate}`;
     element.appendChild(due);
 
-    if (!taskList.length === 0) taskList.forEach(e => element.appendChild(e));
+    let addTask = document.createElement('div');
+    addTask.classList.add('project-add-task');
+    addTask.textContent = '+ Add Task';
+    element.appendChild(addTask);
+
+    if (!taskList.length === 0) taskList.forEach(e => element.insertBefore(e, addTask));
     
     return element
 
@@ -54,20 +59,10 @@ const createModal = (id) => {
 
 const projectModal = () => {
     let modal = createModal('project-modal');
-    let modalBox = document.createElement('div');
-    modalBox.classList.add('modal-box');
+    let modalBox = createModalBox('Add a Project');
     modal.appendChild(modalBox);
 
-    let modalTitle = document.createElement('p');
-    modalTitle.classList.add('modal-title');
-    modalTitle.textContent = 'Add a Project';
-    modalBox.appendChild(modalTitle);
-
-    let textInput = document.createElement('input');
-    textInput.setAttribute('type', 'text');
-    textInput.setAttribute('placeholder', 'your project name');
-    textInput.classList.add('modal-field');
-    textInput.setAttribute('id', 'project-text-input');
+    let textInput = createTextInput('project-text-input', 'Your Project Name');
     modalBox.appendChild(textInput);
 
     let dateInput = document.createElement('input');
@@ -76,10 +71,23 @@ const projectModal = () => {
     dateInput.setAttribute('id', 'project-date-input');//id for date
     modalBox.appendChild(dateInput);
 
+
     let modalButton = makeButton('Add', 'project-add');//the id for this button
     modalBox.appendChild(modalButton);
 
     return modal;
+}
+
+const taskModal = () => {
+    let modal = createModal('project-modal');
+    const modalBox = createModalBox('Add a Task');
+    modal.appendChild(modalBox);
+
+    modalBox.appendChild(createTextInput('task-text-input', 'Task Name'));//id for task input
+    modalBox.appendChild(makeButton('Add', 'task-add'));
+    return modal;
+
+
 }
 
 const makeButton = (text, id) => {
@@ -91,4 +99,43 @@ const makeButton = (text, id) => {
 
 }
 
-export {projectBox, emptyProjectBox, projectModal, makeButton};
+const checkBox = (index, text, completion) => {
+    const div = document.createElement('div');
+    div.classList.add('checkbox');
+
+    const checkField = document.createElement('input');
+    checkField.id = index;
+    checkField.checked = completion;
+    checkField.setAttribute('type', 'checkbox');
+    div.appendChild(checkField);
+
+    const label = document.createElement('label');
+    label.htmlFor = index;
+    label.textContent = text;
+    div.appendChild(label);
+    return div;
+}
+
+function createTextInput(id, placeholder) {
+    let textInput = document.createElement('input');
+    textInput.setAttribute('type', 'text');
+    textInput.setAttribute('placeholder', placeholder);
+    textInput.classList.add('modal-field');
+    textInput.id = id;
+    
+    return textInput;
+}
+
+function createModalBox(title) {
+    let modalBox = document.createElement('div');
+    modalBox.classList.add('modal-box');
+    
+
+    let modalTitle = document.createElement('p');
+    modalTitle.classList.add('modal-title');
+    modalTitle.textContent = title;
+    modalBox.appendChild(modalTitle);
+    return modalBox;
+}
+
+export {projectBox, emptyProjectBox, projectModal, makeButton, checkBox, taskModal};

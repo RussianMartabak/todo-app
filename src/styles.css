@@ -32,6 +32,7 @@ body{
     flex-direction: column;
     align-items: center;
     position: relative;
+    padding: 16px;
 }
 
 .empty-project{
@@ -43,13 +44,14 @@ body{
     flex-direction: column;
     align-items: center;
     position: relative;
+    padding: 16px;
 }
 
 .project-title{
     font-style: normal;
     font-weight: normal;
     font-size: 32px;
-    margin: 16px;
+    margin: 8px;
 }
 
 .project-due{
@@ -57,14 +59,14 @@ body{
     font-weight: normal;
     font-size: 24px;
     text-align: center;
-    margin: 16px;
+    margin: 8px;
 }
 
 .project-add-task{
     font-style: normal;
     font-weight: normal;
-    font-size: 24px;
-    color: #1AC2F7;
+    font-size: 22px;
+    
 }
 
 .project-add-task:hover{
@@ -103,6 +105,9 @@ body{
 .modal-title{
     font-size: 24px;
 }
+.delete:hover{
+    cursor: pointer;
+}
 
 .button {
     font-size: 28px;
@@ -124,3 +129,7 @@ body{
     cursor: pointer;
 }
 
+.checkbox{
+    font-size: 20px;
+    margin: 8px;
+}

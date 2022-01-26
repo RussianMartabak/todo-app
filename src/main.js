@@ -101,8 +101,23 @@ function refreshDisplay() {
         let deleteButtons = document.body.querySelectorAll('.delete');
         deleteButtons.forEach(el => {el.addEventListener('click', removeProject)});
         loadOpenTaskModalEventListener();
+        loadTaskChangeEventListener();
+
     }
     
+}
+function loadTaskChangeEventListener() {
+    let projects = document.querySelectorAll('.project');
+    console.log(projects);
+    projects.forEach(e => {
+        e.addEventListener('change', updateTask)
+    })
+}
+
+function updateTask(e) {
+    let taskIndex =  e.target.id ;
+    let projectIndex = e.target.parentElement.parentElement.getAttribute('data-index');
+    dataManager.updateTaskInStorage(projectIndex, taskIndex, e.target.checked);
 }
 
 function loadOpenTaskModalEventListener() {
@@ -132,7 +147,7 @@ function removeAll(elementClass) {
     let items = document.querySelectorAll(elementClass);
     console.log(items);
     if (items.length !== 0) items.forEach(e => {
-            console.log(e);
+            
             e.remove();
         });
 

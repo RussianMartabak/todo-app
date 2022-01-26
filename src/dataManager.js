@@ -33,4 +33,10 @@ function addTasktoProject(projectIndex, taskObject) {
     projectArray[projectIndex].tasks.push(taskObject);
     localStorage.setItem('projects', JSON.stringify(projectArray));
 }
-export {localData, addToStorage, removeFromStorage, getLocalData, getObjectFromStorage, addTasktoProject};  
+
+function updateTaskInStorage(projectIndex, taskIndex, boolean) {
+    let projectArray = getLocalData()
+    projectArray[projectIndex].tasks[taskIndex].completion = boolean;
+    localStorage.setItem('projects', JSON.stringify(projectArray));
+}
+export {localData, addToStorage, removeFromStorage, getLocalData, getObjectFromStorage, addTasktoProject, updateTaskInStorage};  

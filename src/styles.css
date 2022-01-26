@@ -66,7 +66,7 @@ body{
     font-style: normal;
     font-weight: normal;
     font-size: 22px;
-    
+    margin-top: 16px;
 }
 
 .project-add-task:hover{
@@ -130,6 +130,9 @@ body{
 }
 
 .checkbox{
-    font-size: 20px;
+    font-size: 24px;
     margin: 8px;
+    position: relative;
+    left: 256px;
+    align-self: flex-start;
 }

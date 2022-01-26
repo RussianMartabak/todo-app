@@ -22,4 +22,15 @@ function removeFromStorage(index) {
 function getLocalData() {
     return JSON.parse(localStorage.getItem('projects'));
 }
-export {localData, addToStorage, removeFromStorage, getLocalData};  
+
+function getObjectFromStorage(index) {
+    let items = getLocalData();
+    return items[index];
+}
+
+function addTasktoProject(projectIndex, taskObject) {
+    let projectArray = getLocalData();
+    projectArray[projectIndex].tasks.push(taskObject);
+    localStorage.setItem('projects', JSON.stringify(projectArray));
+}
+export {localData, addToStorage, removeFromStorage, getLocalData, getObjectFromStorage, addTasktoProject};  

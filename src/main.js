@@ -1,13 +1,13 @@
 import "./styles.css";
 import * as elementFactory from './elementFactory.js';
-import {project} from "./project.js";
+import {project, task} from "./project.js";
 import * as dataManager from "./dataManager.js";
 import { parseISO } from "date-fns";
 
 const taskModal = elementFactory.taskModal();
 const projectModal = elementFactory.projectModal();
 const currentDate = new Date();
-let localData = localStorage.getItem('projects');
+
 
 
 
@@ -17,6 +17,10 @@ document.body.appendChild(taskModal);
 document.body.appendChild(elementFactory.emptyProjectBox());
 refreshDisplay();
 
+//task modal references
+let selectedProjectElementIndex;
+const taskModalButton = document.querySelector('#task-add');
+taskModalButton.addEventListener('click', submitTaskModal);
 
 //the logic for project modal
 const openProjectModal = document.querySelector('#open-project-modal');
@@ -27,9 +31,7 @@ const projectModalTextInput = document.querySelector('#project-text-input');
 openProjectModal.addEventListener('click', openProjectModalHandler);
 projectModalButton.addEventListener('click', submitProjectModal);
 
-function openProjectModalHandler(e) {
-    projectModal.style.cssText = 'display: block';
-}
+
 
 function submitProjectModal(e) {
     if (!validate([projectModalDateInput, projectModalTextInput])) {
@@ -42,7 +44,7 @@ function submitProjectModal(e) {
         
         dataManager.addToStorage(newProject);
         //close modal
-        console.log(dataManager.localData);
+        
         projectModal.style.cssText = 'display: none';
         projectModalTextInput.value = '';
         projectModalDateInput.value = '';
@@ -50,6 +52,24 @@ function submitProjectModal(e) {
         refreshDisplay();
     }
      
+}
+function submitTaskModal(e) {
+    const taskModalTextInput = document.querySelector('#task-text-input');
+    if(!validate([taskModalTextInput])) {
+        alert('not filled yet');
+    } else {
+        //make task object 
+        let newTask = task(taskModalTextInput.value, false);
+        
+
+        //parse the parent object, change and update the localstorage
+        dataManager.addTasktoProject(selectedProjectElementIndex, newTask);
+        //reset the input
+        taskModalTextInput.value = '';
+        //refresh display
+        refreshDisplay();
+        taskModal.style.cssText = 'display: none';
+    }
 }
 
 
@@ -68,19 +88,37 @@ function validate(fieldsArray) {
 }
 
 function refreshDisplay() {
-    if (JSON.parse(localStorage.getItem('projects'))) {
+    if (dataManager.getLocalData()) {
         removeAll('.project');
         let emptyProject = document.querySelector('.empty-project');
         //load projects from localstorage
         dataManager.getLocalData().forEach((e, index) => {
             let newProject = elementFactory.projectBox(index, e.title, parseISO(e.dueDate), e.tasks);
             document.body.insertBefore(newProject, emptyProject);
+            console.log(e.tasks);
         })
         //add event listener to all remove button 
         let deleteButtons = document.body.querySelectorAll('.delete');
         deleteButtons.forEach(el => {el.addEventListener('click', removeProject)});
+        loadOpenTaskModalEventListener();
     }
     
+}
+
+function loadOpenTaskModalEventListener() {
+    let openTaskModalButtons = document.querySelectorAll('.project-add-task');
+    if (openTaskModalButtons.length === 0) return;
+    openTaskModalButtons.forEach(el => el.addEventListener('click', openTaskModalHandler));
+}
+
+function openTaskModalHandler(e) {
+    taskModal.style.cssText = 'display: block';
+    selectedProjectElementIndex = e.target.parentElement.getAttribute('data-index');
+    
+}
+
+function openProjectModalHandler(e) {
+    projectModal.style.cssText = 'display: block';
 }
 
 function removeProject(e) {

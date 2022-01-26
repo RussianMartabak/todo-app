@@ -30,7 +30,10 @@ const projectBox = (index, title, duedate, taskList = []) => {
     addTask.textContent = '+ Add Task';
     element.appendChild(addTask);
 
-    if (!taskList.length === 0) taskList.forEach(e => element.insertBefore(e, addTask));
+    if (taskList.length !== 0) taskList.forEach((e, index) => {
+        let newCheckBox = checkBox(index, e.desc, e.completion);
+        element.insertBefore(newCheckBox, addTask);
+    });
     
     return element
 
